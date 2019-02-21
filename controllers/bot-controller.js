@@ -2,8 +2,8 @@ class BotController {
     constructor(x, y, bubbleWidth) {
         this.pos = createVector(x, y);
         this.width = bubbleWidth;
-        this.pos.dx = random(1, 2);
-        this.pos.dy = random(1, 2);
+        this.pos.dx = random(-2, 2);
+        this.pos.dy = random(-2, 2);
         this.vel = createVector(0, 0);
     }
 
