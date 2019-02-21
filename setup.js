@@ -12,7 +12,7 @@ function setup() {
     player = new Bubble(playerController, width / 2, height / 2);
 
     //adding bots
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 0; i++) {
         let x = random(0, width);
         let y = random(0, height);
         let botController = new BotController(x, y, initialWidth);

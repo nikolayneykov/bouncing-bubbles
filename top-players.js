@@ -1,6 +1,43 @@
 var topPlayers = [];
 
+let requester = (function () {
+
+    let get = function () {
+        $.ajax({
+            method: "GET",
+            url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players',
+            headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" }
+        }).then(displayTopPlayers);
+    }
+
+    let post = function (player) {
+        $.ajax({
+            method: 'POST',
+            url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players',
+            headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
+            data: player
+        }).then(function () {
+            displayTopPlayers(topPlayers);
+        });
+    }
+
+    let put = function (player) {
+        $.ajax({
+            method: 'PUT',
+            url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + player._id,
+            headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
+            data: player,
+        }).then(function () {
+            displayTopPlayers(topPlayers);
+        });
+    }
+
+    return { get, post, put };
+})();
+
 $(function () {
+    requester.get();
+
     $('#topPlayers').fadeIn(0);
     $('form').on('submit', function (e) {
         e.preventDefault();
@@ -13,42 +50,21 @@ $(function () {
         }
     });
 
-    $.ajax({
-        method: "GET",
-        url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players',
-        headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" }
-    })
-        .then(displayTopPlayers);
 });
 
-function addPlayer(player) {
+async function addPlayer(player) {
 
     if (topPlayers.length > 0 && topPlayers[topPlayers.length - 1].score < player.score) {
         let currentPlayer = topPlayers.find(x => x.name === player.name);
 
-        if (currentPlayer) {
-            currentPlayer.score = player.score;
-            $.ajax({
-                method: 'PUT',
-                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + currentPlayer._id,
-                headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
-                data: currentPlayer,
-            })
-                .then(function () {
-                    displayTopPlayers(topPlayers);
-                });
-        } else {
+        if (!currentPlayer) {
+            await requester.post(player);
             topPlayers.push(player);
-
-            $.ajax({
-                method: 'POST',
-                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players',
-                headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
-                data: player
-            }).then(function () {
-                displayTopPlayers(topPlayers);
-            });
+            currentPlayer = player;
         }
+
+        currentPlayer.score = player.score;
+        requester.put(currentPlayer);
     }
 }
 
@@ -60,7 +76,7 @@ function displayTopPlayers(players) {
     for (let player of topPlayers) {
         $('#topPlayers').append(`<tr><td id="place">${cnt}.</td><td>${player.name}:</td><td>${player.score}</td></tr>`);
         cnt++;
-        
+
     }
 
 
