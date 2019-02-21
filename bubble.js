@@ -14,10 +14,6 @@ class Bubble {
 
         if (bestScore < currentScore) {
             bestScore = currentScore;
-            
-            if ($('#playerName').val() !== '') {
-                addPlayer({ name: $('#playerName').val(), score: bestScore });
-            }
         }
     }
 

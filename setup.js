@@ -1,3 +1,4 @@
+var topPlayers = [];
 var player;
 var playerController;
 var bestScore = 0;
