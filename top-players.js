@@ -53,7 +53,7 @@ function addPlayer(player) {
 }
 
 function displayTopPlayers(players) {
-    topPlayers = players.filter((e,i,arr)=>i=== arr.indexOf(e)).sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 10);
+    topPlayers = players.sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 10);
     $('#topPlayers').empty();
     $('#topPlayers').append('<th colspan="3">Top 10</th>');
     let cnt = 1;
