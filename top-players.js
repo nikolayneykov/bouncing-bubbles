@@ -30,7 +30,7 @@ function addPlayer(player) {
             currentPlayer.score = player.score;
             $.ajax({
                 method: 'PUT',
-                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + currentPlayer_id,
+                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + currentPlayer._id,
                 headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
                 data: currentPlayer,
             })
