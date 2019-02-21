@@ -30,7 +30,7 @@ function addPlayer(player) {
             currentPlayer.score = player.score;
             $.ajax({
                 method: 'PUT',
-                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + currentPlayer.name,
+                url: 'https://baas.kinvey.com/appdata/kid_SyvSg7jBV/players/' + currentPlayer_id,
                 headers: { 'Authorization': 'Basic ' + "Z3Vlc3Q6Z3Vlc3Q=" },
                 data: currentPlayer,
             })
@@ -53,7 +53,7 @@ function addPlayer(player) {
 }
 
 function displayTopPlayers(players) {
-    topPlayers = players.sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 10);
+    topPlayers = players.filter((e,i,arr)=>i=== arr.indexOf(e)).sort((a, b) => Number(b.score) - Number(a.score)).slice(0, 10);
     $('#topPlayers').empty();
     $('#topPlayers').append('<th colspan="3">Top 10</th>');
     let cnt = 1;
